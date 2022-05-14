@@ -5,13 +5,6 @@ import (
 	"os"
 )
 
-func DiscordClientID() string {
-	if os.Getenv("DISCORD_CLIENT_ID") == "" {
-		return ""
-	}
-	return os.Getenv("DISCORD_CLIENT_ID")
-}
-
 func DiscordBotToken() string {
 	if os.Getenv("DISCORD_BOT_TOKEN") == "" {
 		return ""
