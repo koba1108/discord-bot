@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  dev-setup:
+    build:
+      context: .
+      dockerfile: docker/go.Dockerfile
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: cp scripts/pre-commit.sh .git/hooks/pre-commit
+  bot:
+    build:
+      context: .
+      dockerfile: docker/go.Dockerfile
+    volumes:
+      - .:/app
+    working_dir: /app
+    ports:
+      - "8085:8085"
+    restart: always
+    tty: true
+    env_file:
+      - .env
+    environment:
+      ENV: dev
+      PORT: 8085
+    command: sh ./scripts/discord-bot.sh
+    depends_on:
+      - dev-setup
+    networks:
+      - app-net
+
+networks:
+  app-net:
+    driver: bridge
