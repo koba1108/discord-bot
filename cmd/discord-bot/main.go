@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"github.com/koba1108/discord-bot/internals/config"
 	"github.com/koba1108/discord-bot/internals/handler"
+	"log"
 	"os"
 	"os/signal"
 	"syscall"
@@ -12,6 +12,7 @@ import (
 )
 
 func main() {
+	log.Printf("Listening... PORT:%s", os.Getenv("PORT"))
 	discord, err := discordgo.New(config.DiscordBotToken())
 	if err != nil {
 		panic(err)
@@ -22,7 +23,6 @@ func main() {
 	}
 	defer discord.Close()
 
-	fmt.Printf("Listening PORT:%s", os.Getenv("PORT"))
 	stopBot := make(chan os.Signal, 1)
 	signal.Notify(stopBot, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-stopBot
